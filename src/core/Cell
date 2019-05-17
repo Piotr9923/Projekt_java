@@ -1,1 +1,10 @@
+package core;
 
+import gui.Menu;
+
+public class Cell {
+    
+    public int state=0;
+    public int change=0;
+
+}
