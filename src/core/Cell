@@ -7,4 +7,24 @@ public class Cell {
     public int state=0;
     public int change=0;
 
+    
+     public void updateCell(int x,int y){
+
+         if(change==1){
+         
+            if(Menu.celluarautomat==0){
+                if(state==1) {state=2;change=0;}
+                else if(state==2) {state=3;change=0;}
+                else if(state==3) {state=1;change=0;}
+            }
+          
+            else if(Menu.celluarautomat==1){
+          
+                if(state==0) {state=1;change=0;}
+                else {state=0;change=0;}
+            
+            }
+          
+        }
+    }
 }
