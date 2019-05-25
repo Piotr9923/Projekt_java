@@ -7,7 +7,7 @@ package gui;
 
 import core.Cell;
 import core.GameEngine;
-import core.ResourceLoader;
+import core.CellularAutomaton;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,31 +55,31 @@ import javax.swing.JPanel;
         //Sprawdznie czy dana generacja jest pierwszą czy nie
         public int ile = 0;
         //Wczytanie obrazka z odpowiednim kolorem do danego stanu komórki
-        ImageIcon empty = new ImageIcon("src/image/" + Menu.empty_color + ".png");
-        ImageIcon head = new ImageIcon("src/image/" + Menu.head_color + ".png");
-        ImageIcon tail = new ImageIcon("src/image/" + Menu.tail_color + ".png");
-        ImageIcon conductor = new ImageIcon("src/image/" + Menu.conductor_color + ".png");
+        ImageIcon empty = new ImageIcon(getClass().getResource("/image/" + Menu.empty_color + ".png"));
+        ImageIcon head = new ImageIcon(getClass().getResource("/image/" + Menu.head_color + ".png"));
+        ImageIcon tail = new ImageIcon(getClass().getResource("/image/" + Menu.tail_color + ".png"));
+        ImageIcon conductor = new ImageIcon(getClass().getResource("/image/" + Menu.conductor_color + ".png"));
 
         public int number_shape=1;
       
      
 //Obrazki układów
-         ImageIcon im_shape1 = new ImageIcon("src/image/DIODE1.png");
-         ImageIcon im_shape1d = new ImageIcon("src/image/DIODE1d.png");
-         ImageIcon im_shape2 = new ImageIcon("src/image/DIODE2.png");
-         ImageIcon im_shape2d = new ImageIcon("src/image/DIODE2d.png");
-         ImageIcon im_shape3 = new ImageIcon("src/image/DIODE3.png");
-         ImageIcon im_shape3d = new ImageIcon("src/image/DIODE3d.png");
+         ImageIcon im_shape1 = new ImageIcon(getClass().getResource("/image/DIODE1.png"));
+         ImageIcon im_shape1d = new ImageIcon(getClass().getResource("/image/DIODE1d.png"));
+         ImageIcon im_shape2 = new ImageIcon(getClass().getResource("/image/DIODE2.png"));
+         ImageIcon im_shape2d = new ImageIcon(getClass().getResource("/image/DIODE2d.png"));
+         ImageIcon im_shape3 = new ImageIcon(getClass().getResource("/image/DIODE3.png"));
+         ImageIcon im_shape3d = new ImageIcon(getClass().getResource("/image/DIODE3d.png"));
         //Przyciski sterujące
         JButton button_stop = new JButton("Stop");
         JButton button_start = new JButton("Start");
         JButton button_next = new JButton("Next");
         
         JButton shape= new JButton();
-        JButton next_shape= new JButton(new ImageIcon("src/image/NEXT.png"));
+        JButton next_shape= new JButton(new ImageIcon(getClass().getResource("/image/NEXT.png")));
         
         JLabel cell_state=new JLabel();
-        JButton next_cell_state=new JButton(new ImageIcon("src/image/NEXT.png"));
+        JButton next_cell_state=new JButton(new ImageIcon(getClass().getResource("/image/NEXT.png")));
         private int cell_s;
         JLabel s_name=new JLabel();
         JLabel fly_shape=new JLabel();
@@ -93,7 +93,7 @@ import javax.swing.JPanel;
             
             remove(n);
             n.setBounds(board_width*5+150, height * 10 + 15, 35, 20);
-            n.setText(ResourceLoader.generationNumber+"");
+            n.setText(GameEngine.generationNumber+"");
             add(n);
             
             
@@ -305,13 +305,13 @@ import javax.swing.JPanel;
         public void loadGrid(){
             
             for(int i=0;i<height;i++)
-                for(int j=0;j<width;j++) GameEngine.g.grid[i][j].state=grid[i][j].state;
+                for(int j=0;j<width;j++) CellularAutomaton.g.grid[i][j].state=grid[i][j].state;
         }
          
         public void updateBoard(){
             
             for(int i=0;i<height;i++)
-                for(int j=0;j<width;j++) grid[i][j].state=GameEngine.g.grid[i][j].state;
+                for(int j=0;j<width;j++) grid[i][j].state=CellularAutomaton.g.grid[i][j].state;
             
             repaint();
     

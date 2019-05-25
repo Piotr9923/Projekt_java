@@ -2,9 +2,9 @@
 package gui;
 
 import core.Cell;
-import core.GameEngine;
+import core.CellularAutomaton;
 import core.Grid;
-import core.ResourceLoader;
+import core.GameEngine;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,26 +52,26 @@ import javax.swing.JPanel;
         //Sprawdznie czy dana generacja jest pierwszą czy nie
         public int ile = 0;
         //Wczytanie obrazka z odpowiednim kolorem do danego stanu komórki
-        ImageIcon live = new ImageIcon("src/image/" + Menu.live_color + ".png");
-        ImageIcon dead = new ImageIcon("src/image/" + Menu.dead_color + ".png");
+        ImageIcon live = new ImageIcon(getClass().getResource("/image/" + Menu.live_color + ".png"));
+        ImageIcon dead = new ImageIcon(getClass().getResource("/image/" + Menu.dead_color + ".png"));
         
         public int number_shape=1;
       
  
 //Obrazki układów
-         ImageIcon im_shape1 = new ImageIcon("src/image/SHAPE1.png");
-         ImageIcon im_shape1d = new ImageIcon("src/image/SHAPE1d.png");
-         ImageIcon im_shape2 = new ImageIcon("src/image/SHAPE2.png");
-         ImageIcon im_shape2d = new ImageIcon("src/image/SHAPE2d.png");
-         ImageIcon im_shape3 = new ImageIcon("src/image/SHAPE3.png");
-         ImageIcon im_shape3d = new ImageIcon("src/image/SHAPE3d.png");
+         ImageIcon im_shape1 = new ImageIcon(getClass().getResource("/image/SHAPE1.png"));
+         ImageIcon im_shape1d = new ImageIcon(getClass().getResource("/image/SHAPE1d.png"));
+         ImageIcon im_shape2 = new ImageIcon(getClass().getResource("/image/SHAPE2.png"));
+         ImageIcon im_shape2d = new ImageIcon(getClass().getResource("/image/SHAPE2d.png"));
+         ImageIcon im_shape3 = new ImageIcon(getClass().getResource("/image/SHAPE3.png"));
+         ImageIcon im_shape3d = new ImageIcon(getClass().getResource("/image/SHAPE3d.png"));
         //Przyciski sterujące
         JButton button_stop = new JButton("Stop");
         JButton button_start = new JButton("Start");
         JButton button_next = new JButton("Next");
         
         JButton shape= new JButton();
-        JButton next_shape= new JButton(new ImageIcon("src/image/NEXT.png"));
+        JButton next_shape= new JButton(new ImageIcon(getClass().getResource("/image/NEXT.png")));
         
         JLabel fly_shape=new JLabel();
         private int shape_x=-55,shape_y=-55;
@@ -85,7 +85,7 @@ import javax.swing.JPanel;
             
             remove(n);
             n.setBounds(board_width*5+150, height * 10 + 15, 35, 20);
-            n.setText(ResourceLoader.generationNumber+"");
+            n.setText(GameEngine.generationNumber+"");
             add(n);
             
             remove(fly_shape);
@@ -205,13 +205,13 @@ import javax.swing.JPanel;
         public void loadGrid(){
             
             for(int i=0;i<height;i++)
-                for(int j=0;j<width;j++) GameEngine.g.grid[i][j].state=grid[i][j].state;
+                for(int j=0;j<width;j++) CellularAutomaton.g.grid[i][j].state=grid[i][j].state;
         }
          
         public void updateBoard(){
             
             for(int i=0;i<height;i++)
-                for(int j=0;j<width;j++) grid[i][j].state=GameEngine.g.grid[i][j].state;
+                for(int j=0;j<width;j++) grid[i][j].state=CellularAutomaton.g.grid[i][j].state;
             
             repaint();
     

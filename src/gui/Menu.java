@@ -8,8 +8,9 @@ import java.io.File;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import core.FileBrowser;
-import core.GameEngine;
+import core.CellularAutomaton;
+
+
 public class Menu extends JFrame implements ActionListener , MouseListener {
     //Przyciski umożliwiające wybór pliku z danymi oraz zakończenie działanie Menu
     JButton btn, browse1;
@@ -19,17 +20,17 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
     //Zmienne przechowujące wprowadzone ustawienia
     public static int width = 40, height = 40, time;
     public static String filename;
-    public static int celluarautomat=0;
+    public static int cellularAutomaton=0;
     
     //Rozwijane Menu
     private JComboBox<String> ch, ct, cd, ce, cdc, clc;
     //Kolory stanów Wireworld
-    public static String head_color, tail_color, conductor_color, empty_color;
+    public static String head_color="BLACK", tail_color="BLACK", conductor_color="BLACK", empty_color="BLACK";
     //Zmienne pomocnicze przy wyborze kolory stanu
     int index_h = 0, index_t = 0, index_d = 0, index_e = 0;
     int index_live, index_dead;
     //Kolory stanów Game of Life
-    public static String live_color, dead_color;
+    public static String live_color="BLACK", dead_color="BLACK";
     //Ścieżka do pliku z danymi
     public static String filepath;
             JLabel w, h, t, eh, et, d, ee, f, edc, elc, browse;
@@ -48,14 +49,14 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
         //Etykiety zawierające nazwy wprowadzanych wartości
         
         //Dodanie przycisku umożliwiającego wybór Game of life
-        btn_gol = new JButton(new ImageIcon("src/image/gol_name.png"));
+        btn_gol = new JButton(new ImageIcon(getClass().getResource("/image/gol_name.png")));
         btn_gol.setBounds(150, 100, 165, 143);
         add(btn_gol);
         btn_gol.addActionListener(this);
         btn_gol.addMouseListener(this);
         
         //Dodanie przycisku umożliwiającego wybór Wireworld
-        btn_ww = new JButton(new ImageIcon("src/image/ww_name.png"));
+        btn_ww = new JButton(new ImageIcon(getClass().getResource("/image/ww_name.png")));
         btn_ww.setBounds(80, 350, 300, 120);
         add(btn_ww);
         btn_ww.addActionListener(this);
@@ -231,9 +232,9 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
         /**********************************/
         //Zakończenie Menu
         btn = new JButton("OK");
-        if (celluarautomat == 0) {
+        if (cellularAutomaton == 0) {
             btn.setBounds(85, 560, -300, -300);
-        } else if (celluarautomat == 1) {
+        } else if (cellularAutomaton == 1) {
             btn.setBounds(85, 440, -300, -300);
         }
         add(btn);
@@ -243,7 +244,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
     }
 
     public static void main(String[] args) {
-        new Menu();
+      new Menu();
 
     }
 
@@ -256,7 +257,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
         
         if (source == btn_gol) {
             
-            celluarautomat=1;
+            cellularAutomaton=1;
                     
             btn_gol.setLocation(-300, -300);
             btn_ww.setLocation(-300, -300);
@@ -267,7 +268,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
         
         if (source == btn_ww) {
             
-            celluarautomat=0;
+            cellularAutomaton=0;
             
             btn_gol.setLocation(-300, -300);
             btn_ww.setLocation(-300, -300);
@@ -309,7 +310,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
                 JOptionPane.showMessageDialog(null, "You did not choose text file!!");
             }
             //Jeśli wybrane zostało Wireworld to przypisanie wartości poszczególnych kolorów
-            if (celluarautomat == 0) {
+            if (cellularAutomaton == 0) {
                 empty_color = ce.getItemAt(index_e);
                 head_color = ch.getItemAt(index_h);
                 tail_color = ct.getItemAt(index_t);
@@ -317,7 +318,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
                 
             }
             //Jeśli wybrane zostało Game of Life to przypisanie wartości poszczególnych kolorów
-            if (celluarautomat == 1) {
+            if (cellularAutomaton == 1) {
                 live_color = clc.getItemAt(index_live);
                 dead_color = cdc.getItemAt(index_dead);
             }
@@ -338,7 +339,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
             if (ok == 0) {
                 dispose();
 
-                new GameEngine();
+                new CellularAutomaton();
             }
         
         } 
@@ -355,14 +356,14 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-            if(e.getSource()==btn_gol) btn_gol.setIcon(new ImageIcon("src/image/gol_animation.gif"));
-            else if(e.getSource()==btn_ww) btn_ww.setIcon(new ImageIcon("src/image/ww_animation.gif"));
+            if(e.getSource()==btn_gol) btn_gol.setIcon(new ImageIcon(getClass().getResource("/image/gol_animation.gif")));
+            else if(e.getSource()==btn_ww) btn_ww.setIcon(new ImageIcon(getClass().getResource("/image/ww_animation.gif")));
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-            if(e.getSource()==btn_gol) btn_gol.setIcon(new ImageIcon("src/image/gol_name.png"));
-            else if(e.getSource()==btn_ww) btn_ww.setIcon(new ImageIcon("src/image/ww_name.png"));
+            if(e.getSource()==btn_gol) btn_gol.setIcon(new ImageIcon(getClass().getResource("/image/gol_name.png")));
+            else if(e.getSource()==btn_ww) btn_ww.setIcon(new ImageIcon(getClass().getResource("/image/ww_name.png")));
 	}
 
 	@Override
