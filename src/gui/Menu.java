@@ -9,9 +9,12 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import core.CellularAutomaton;
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
-public class Menu extends JFrame implements ActionListener , MouseListener {
+public class Menu extends JFrame implements ActionListener , MouseListener, KeyListener {
     //Przyciski umożliwiające wybór pliku z danymi oraz zakończenie działanie Menu
     JButton btn, browse1;
     JButton btn_gol,btn_ww;
@@ -19,7 +22,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
     JTextField w1, h1, t1, f1;
     //Zmienne przechowujące wprowadzone ustawienia
     public static int width = 40, height = 40, time;
-    public static String filename;
+    public static String filename="";
     public static int cellularAutomaton=0;
     
     //Rozwijane Menu
@@ -70,8 +73,10 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
         
         w1 = new JTextField("40");
         w1.setBounds(150, 20, -300, -300);
+        w1.addKeyListener(this);
         add(w1);
         
+     
         /**********************************/
         //Wysokość
         h = new JLabel("Height");
@@ -80,6 +85,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
 
         h1 = new JTextField("40");
         h1.setBounds(150, 80, -300, -300);
+        h1.addKeyListener(this);
         add(h1);
       
         /**********************************/
@@ -90,6 +96,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
 
         t1 = new JTextField("100");
         t1.setBounds(150, 140, -300, -300);
+        t1.addKeyListener(this);
         add(t1);
         
         /**********************************/
@@ -255,6 +262,15 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
         
         Object source = e.getSource();
         
+        
+        if(source ==w1){
+            
+            System.out.println("ta");
+             
+        }
+        
+        
+        
         if (source == btn_gol) {
             
             cellularAutomaton=1;
@@ -373,6 +389,62 @@ public class Menu extends JFrame implements ActionListener , MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
+        
+         @Override
+    public void keyTyped(KeyEvent e) {
+        
+    
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        
+         
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if(e.getSource()==w1){
+
+            try {
+                width = Integer.parseInt(w1.getText());
+                
+                w1.setBackground(Color.white);
+                if(width<=0) w1.setBackground(Color.red);
+            } catch (NumberFormatException w) {
+                w1.setBackground(Color.red);
+            }
+            
+        }
+        if(e.getSource()==h1){
+
+            try {
+                height = Integer.parseInt(h1.getText());
+                h1.setBackground(Color.white);
+                if(height<=0) h1.setBackground(Color.red);
+            } catch (NumberFormatException w) {
+                h1.setBackground(Color.red);
+            }
+            
+        }
+        if(e.getSource()==t1){
+
+            try {
+                time = Integer.parseInt(t1.getText());
+                t1.setBackground(Color.white);
+                if(time<=0) t1.setBackground(Color.red);
+            } catch (NumberFormatException w) {
+                t1.setBackground(Color.red);
+            }
+            
+        }
+        
+        
+        
+        
+        
+    }
+        
         
         
         void uploadGOLMenu(){
