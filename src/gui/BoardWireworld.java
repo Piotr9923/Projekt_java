@@ -1,4 +1,3 @@
-
 package gui;
 
 import core.Cell;
@@ -40,16 +39,18 @@ import javax.swing.JPanel;
             boardLocation=(boardWidth-width)*5;
         }
         
-        //Zmienne pomocnicze
+    //Zmienne pomocnicze
        public int start = 0, rp = 0,edit=0,next=0;
-        //Tablica która będzie obrazować stany komórek
-        JLabel[][] obrazek = new JLabel[height][width];
-        //Tablica stanów komórek oraz sprawdzenie czy dana komóra jest do zmiany
+       
+    //Tablica która będzie obrazować stany komórek
+        JLabel[][] cellImage = new JLabel[height][width];
+    //Tablica stanów komórek oraz sprawdzenie czy dana komóra jest do zmiany
        
         
-        //Sprawdznie czy dana generacja jest pierwszą czy nie
+    //Sprawdznie czy dana generacja jest pierwszą czy nie
         public int ile = 0;
-        //Wczytanie obrazka z odpowiednim kolorem do danego stanu komórki
+        
+    //Wczytanie obrazka z odpowiednim kolorem do danego stanu komórki
         ImageIcon empty = new ImageIcon(getClass().getResource("/image/" + Menu.emptyColor + ".png"));
         ImageIcon head = new ImageIcon(getClass().getResource("/image/" + Menu.headColor + ".png"));
         ImageIcon tail = new ImageIcon(getClass().getResource("/image/" + Menu.tailColor + ".png"));
@@ -58,13 +59,13 @@ import javax.swing.JPanel;
         public int numberShape=1;
       
      
-//Obrazki układów
-         ImageIcon imShape1 = new ImageIcon(getClass().getResource("/image/DIODE1.png"));
-         ImageIcon imShape1d = new ImageIcon(getClass().getResource("/image/DIODE1d.png"));
-         ImageIcon imShape2 = new ImageIcon(getClass().getResource("/image/DIODE2.png"));
-         ImageIcon imShape2d = new ImageIcon(getClass().getResource("/image/DIODE2d.png"));
-         ImageIcon imShape3 = new ImageIcon(getClass().getResource("/image/DIODE3.png"));
-         ImageIcon imShape3d = new ImageIcon(getClass().getResource("/image/DIODE3d.png"));
+    //Obrazki układów
+        ImageIcon imShape1 = new ImageIcon(getClass().getResource("/image/DIODE1.png"));
+        ImageIcon imShape1d = new ImageIcon(getClass().getResource("/image/DIODE1d.png"));
+        ImageIcon imShape2 = new ImageIcon(getClass().getResource("/image/DIODE2.png"));
+        ImageIcon imShape2d = new ImageIcon(getClass().getResource("/image/DIODE2d.png"));
+        ImageIcon imShape3 = new ImageIcon(getClass().getResource("/image/DIODE3.png"));
+        ImageIcon imShape3d = new ImageIcon(getClass().getResource("/image/DIODE3d.png"));
         //Przyciski sterujące
         JButton buttonStop = new JButton("Stop");
         JButton buttonStart = new JButton("Start");
@@ -86,36 +87,34 @@ import javax.swing.JPanel;
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             
-            remove(n);
             n.setBounds(boardWidth*5+150, height * 10 + 15, 35, 20);
             n.setText(GameEngine.generationNumber+"");
-            add(n);
+            if(ile==0) add(n);
             
             
-            remove(iconShape);
             if(drawing==1) {iconShape.setIcon(imShape1d); iconShape.setBounds(shapeX-5, shapeX-5, 120, 30);}
             if(drawing==2) {iconShape.setIcon(imShape2d); iconShape.setBounds(shapeX-5, shapeX-5, 120, 30);}
             if(drawing==3) {iconShape.setIcon(imShape3d); iconShape.setBounds(shapeX-5, shapeX-5, 170, 90);}
-           iconShape.setLocation(shapeX-5, shapeY-5);
+            iconShape.setLocation(shapeX-5, shapeY-5);
            
-            add(iconShape);
+            if(ile==0) add(iconShape,1);
+            
             //Dodanie przycisków
-            buttonStop.setBounds(boardWidth*5-30, height * 10 + 15, 60, 40);
+            if(ile==0){
             add(buttonStop);
-            buttonStop.removeActionListener(this);
             buttonStop.addActionListener(this);
             
-            buttonStart.setBounds(boardWidth*5-130, height * 10 + 15, 80, 40);
             add(buttonStart);
-            buttonStart.removeActionListener(this);
             buttonStart.addActionListener(this);
 
-            buttonNext.setBounds(boardWidth*5+50, height * 10 + 15, 80, 40);
             add(buttonNext);
-            buttonNext.removeActionListener(this);
             buttonNext.addActionListener(this);
-          
+            }
             
+            buttonStop.setBounds(boardWidth*5-30, height * 10 + 15, 60, 40);
+            buttonStart.setBounds(boardWidth*5-130, height * 10 + 15, 80, 40);
+            buttonNext.setBounds(boardWidth*5+50, height * 10 + 15, 80, 40);
+           
             cellState.setBounds(75, height*10+25, 20, 20);
             nextCellState.setBounds(70, height*10+50, 30, 15);
             shapeName.setBounds(60, height*10+5, 70, 15);
@@ -146,46 +145,46 @@ import javax.swing.JPanel;
 
                 add(nextCellState);
                 nextCellState.removeActionListener(this);
-                nextCellState.addActionListener(this);
-                
-                
+                nextCellState.addActionListener(this);  
             }
             else {remove(shape);remove(nextShape);remove(cellState);remove(nextCellState);remove(shapeName);}
             
             
             
          
-            //Jeśli nie jest to piersza generacja to usuwamy wczytane wcześniej obrazki oraz zmieniamy stany komórek
-            if (ile >= 1) {
+            if(ile==0){
                 for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        remove(obrazek[i][j]);
-                      
-                    }
+                for (int j = 0; j < width; j++) {
+                    
+                            cellImage[i][j] = new JLabel();add(cellImage[i][j]);
+
+                        cellImage[i][j].setBounds(j * 10+boardLocation, i * 10, 10, 10);
+                        
+                    } 
                 }
             }
             
             //Wczytujemy odpowiednie obrazki na podstawie stanu danej komórki
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
+                  cellImage[i][j].setLocation(j * 10+boardLocation, i * 10);
+                  
                     if (grid[i][j].state == Cell.State.HEAD) {
                         
-                            obrazek[i][j] = new JLabel(head);
+                            cellImage[i][j].setIcon(head); 
                             
                     }
                     if (grid[i][j].state == Cell.State.TAIL) {
                     
-                            obrazek[i][j] = new JLabel(tail);
+                            cellImage[i][j].setIcon(tail);
                      } 
                     if (grid[i][j].state == Cell.State.CONDUCTOR) {
                  
-                            obrazek[i][j] = new JLabel(conductor);
+                            cellImage[i][j].setIcon(conductor); 
                     } 
                     if (grid[i][j].state == Cell.State.EMPTY) {
-                        obrazek[i][j] = new JLabel(empty);
+                       cellImage[i][j].setIcon(empty); 
                     }
-                    obrazek[i][j].setBounds(j * 10+boardLocation, i * 10, 10, 10);
-                    add(obrazek[i][j]);
                 }
             }
             if(ile==0) {start=1;edit=1;}
@@ -193,14 +192,14 @@ import javax.swing.JPanel;
         }
 
         public void actionPerformed(ActionEvent e) {
+            
             //Rozpoczęcie generacji
-         
               if (e.getSource() == buttonStart) {
                 start = 0;
                 rp = 0;
                 edit=0;
             }
-            //Zatrzymanie generacji
+        //Zatrzymanie generacji
             if (e.getSource() == buttonStop) {
                 start = 1;
                 next=0;
@@ -209,7 +208,7 @@ import javax.swing.JPanel;
                 rp=1;
                 
             }
-            //Wczytanie następnej generacji
+        //Wczytanie następnej generacji
             if (e.getSource() == buttonNext) {
                 start = 0;
                 repaint();
@@ -335,6 +334,7 @@ import javax.swing.JPanel;
             
           
         }
+        
         private void drawDiode2(int x,int y){
            if(y+1<height&&x+0<width) grid[y+1][x+0].state=Cell.State.CONDUCTOR;
            if(y+1<height&&x+1<width) grid[y+1][x+1].state=Cell.State.CONDUCTOR;
@@ -403,9 +403,6 @@ import javax.swing.JPanel;
            if(y+8<height&&x+4<width) grid[y+8][x+4].state=Cell.State.CONDUCTOR;
            if(y+8<height&&x+5<width) grid[y+8][x+5].state=Cell.State.CONDUCTOR;
            if(y+8<height&&x+6<width) grid[y+8][x+6].state=Cell.State.CONDUCTOR;
-        }
-        
-       
-        
+        } 
     }
 

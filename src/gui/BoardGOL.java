@@ -1,4 +1,3 @@
-
 package gui;
 
 import core.Cell;
@@ -27,6 +26,7 @@ import javax.swing.JPanel;
         private Cell[][]grid=new Cell[height][width];
         
         public BoardGOL(){
+            
             for(int i=0;i<height;i++)
              for(int j=0;j<width;j++) grid[i][j]=new Cell();
             
@@ -44,7 +44,7 @@ import javax.swing.JPanel;
         //Zmienne pomocnicze
         public int start = 0, rp = 0,edit=0,next=0;
         //Tablica która będzie obrazować stany komórek
-        JLabel[][] obrazek = new JLabel[height][width];
+        JLabel[][] cellImage = new JLabel[height][width];
         //Tablica stanów komórek oraz sprawdzenie czy dana komóra jest do zmiany
        
         
@@ -82,37 +82,39 @@ import javax.swing.JPanel;
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             
-            remove(n);
+            long czasRozpoczecia = System.currentTimeMillis();
+
+            
             n.setBounds(boardWidth*5+150, height * 10 + 15, 35, 20);
             n.setText(GameEngine.generationNumber+"");
-            add(n);
+            if(ile==0) add(n);
             
-            remove(iconShape);
             if(drawing==1) {iconShape.setIcon(imShape1d); iconShape.setBounds(shapeX-5, shapeY-5, 30, 30);}
             if(drawing==2) {iconShape.setIcon(imShape2d); iconShape.setBounds(shapeX-5, shapeY-5, 50, 40);}
             if(drawing==3) {iconShape.setIcon(imShape3d); iconShape.setBounds(shapeX-5, shapeY-5, 90, 90);}
             iconShape.setLocation(shapeX-5, shapeY-5);
            
-            add(iconShape);
-            //Dodanie przycisków
-            buttonStop.setBounds(boardWidth*5-30, height * 10 + 15, 60, 40);
-            add(buttonStop);
-            buttonStop.removeActionListener(this);
-            buttonStop.addActionListener(this);
+            if(ile==0) add(iconShape,1);
             
-            buttonStart.setBounds(boardWidth*5-130, height * 10 + 15, 80, 40);
+            //Dodanie przycisków
+           if(ile==0){ add(buttonStop);
+            buttonStop.addActionListener(this);
+           
             add(buttonStart);
-            buttonStart.removeActionListener(this);
             buttonStart.addActionListener(this);
 
-            buttonNext.setBounds(boardWidth*5+50, height * 10 + 15, 80, 40);
             add(buttonNext);
-            buttonNext.removeActionListener(this);
             buttonNext.addActionListener(this);
           
-            
+           }
+            buttonNext.setBounds(boardWidth*5+50, height * 10 + 15, 80, 40);
+            buttonStart.setBounds(boardWidth*5-130, height * 10 + 15, 80, 40);
+            buttonStop.setBounds(boardWidth*5-30, height * 10 + 15, 60, 40);
+
             shape.setBounds(10, height * 10 + 15, 30, 30);
             nextShape.setBounds(10, height * 10 + 50, 30, 15);
+           
+           
             if(edit==1){
                 add(shape);
                 shape.removeActionListener(this);
@@ -127,35 +129,44 @@ import javax.swing.JPanel;
             }
             else {remove(shape);remove(nextShape);}
             
-            
-            
-   
-            //Jeśli nie jest to piersza generacja to usuwamy wczytane wcześniej obrazki oraz zmieniamy stany komórek
-            if (ile >= 1) {
+          
+          if(ile==0){
                 for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        remove(obrazek[i][j]);
+                for (int j = 0; j < width; j++) {
+                    
+                            cellImage[i][j] = new JLabel();add(cellImage[i][j]);
+
+                        cellImage[i][j].setBounds(j * 10+boardLocation, i * 10, 10, 10);
                         
-                    }
+                    } 
                 }
             }
             
             //Wczytujemy odpowiednie obrazki na podstawie stanu danej komórki
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
+                cellImage[i][j].setLocation(j * 10+boardLocation, i * 10);
+
                     if (grid[i][j].state == Cell.State.ALIVE) {
-                            obrazek[i][j] = new JLabel(live);
-                       
+                            cellImage[i][j].setIcon(live);                       
                     } 
                     if (grid[i][j].state == Cell.State.DEAD) {
-                        obrazek[i][j] = new JLabel(dead);
+                        cellImage[i][j].setIcon(dead);
                     }
-                    obrazek[i][j].setBounds(j * 10+boardLocation, i * 10, 10, 10);
-                    add(obrazek[i][j]);
+                   
                 }
             }
             if(ile==0) {start=1;edit=1;}
            ile++;
+           
+           
+           long czasZakonczenia = System.currentTimeMillis();
+
+       long czasTrwania = czasZakonczenia - czasRozpoczecia;
+
+       System.out.println("Czas trwania: " + czasTrwania);
+         
+       
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -230,8 +241,8 @@ import javax.swing.JPanel;
                if(drawing==2) drawLwss((e.getX()-boardLocation)/10,e.getY()/10);
                if(drawing==3) drawLoafer((e.getX()-boardLocation)/10,e.getY()/10);
                 drawing=0;
-                shapeX=-55;
-                shapeX=-55;
+                shapeX=-95;
+                shapeX=-95;
                 repaint();
             }
 	}
@@ -245,8 +256,8 @@ import javax.swing.JPanel;
                 repaint();
             }
             else {
-            shapeX=-55;
-            shapeY=-55;
+            shapeX=-95;
+            shapeY=-95;
             
             }
 	}
