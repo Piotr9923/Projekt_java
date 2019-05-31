@@ -11,25 +11,21 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 
-/**
- *
- * @author Użytkownik
- */
 public class Writer {
     
     void write(int number) throws IOException{
-        for(int i=0;i<Menu.height;i++)
-            for(int j=0;j<Menu.width;j++)
+        for(int i=0;i<Menu.getCAHeight();i++)
+            for(int j=0;j<Menu.getCAWidth();j++)
             {
-                if(Menu.celluarautomat==0){
+                if(Menu.cellularAutomaton==Menu.CA.WW){
                     
-                   if(GameEngine.g.grid[i][j].state==1)writeWireworld("ElectronHead",j,i,number);
-                   else if(GameEngine.g.grid[i][j].state==2)writeWireworld("ElectronTail",j,i,number);
-                   else if(GameEngine.g.grid[i][j].state==3)writeWireworld("Conductor",j,i,number);
+                   if(CellularAutomaton.g.getCell(i, j).state==Cell.State.HEAD)writeWireworld("ElectronHead",j,i,number);
+                   else if(CellularAutomaton.g.getCell(i, j).state==Cell.State.TAIL)writeWireworld("ElectronTail",j,i,number);
+                   else if(CellularAutomaton.g.getCell(i, j).state==Cell.State.CONDUCTOR)writeWireworld("Conductor",j,i,number);
                     
                 }
                 else {
-                    if(GameEngine.g.grid[i][j].state==1) writeGOL(j,i,number);
+                    if(CellularAutomaton.g.getCell(i, j).state==Cell.State.ALIVE) writeGOL(j,i,number);
                 }
                 
             }

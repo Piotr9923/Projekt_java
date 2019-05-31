@@ -8,25 +8,25 @@ import javax.swing.Timer;
 
 public class CellularAutomaton extends JFrame{
     
-    private final int DELAY=Menu.time;
+    private final int DELAY=Menu.getCATime();
     public static Grid g;
     static BoardGOL b;
     static BoardWireworld bw;
     static Writer w;
     private int board_width;
     public CellularAutomaton(){
-         super("Game of Life");
+         super("Cellular Automaton");
           
-        if(Menu.celluarautomat==1){ 
-            if(Menu.width<40) board_width=40;
-            else board_width=Menu.width;
+        if(Menu.cellularAutomaton==Menu.CA.GOL){ 
+            if(Menu.getCAWidth()<40) board_width=40;
+            else board_width=Menu.getCAWidth();
         }
         else{
-            if(Menu.width<50) board_width=50;
-            else board_width=Menu.width;
+            if(Menu.getCAWidth()<50) board_width=50;
+            else board_width=Menu.getCAWidth();
         }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(board_width * 10 + 6, Menu.height * 10 + 100);
+        setSize(board_width * 10 + 6, Menu.getCAHeight() * 10 + 110);
         setResizable(false);
         setLocationRelativeTo(null);
         
@@ -34,10 +34,10 @@ public class CellularAutomaton extends JFrame{
         bw=new BoardWireworld();
         g=new Grid();
         w=new Writer();
-         if(Menu.celluarautomat==0) new WireworldBufferedReader(Menu.filepath);
+         if(Menu.cellularAutomaton==Menu.CA.WW) new WireworldBufferedReader(Menu.filepath);
          else new GOLBufferedReader(Menu.filepath);
                  
-         if(Menu.celluarautomat==1){             
+         if(Menu.cellularAutomaton==Menu.CA.GOL){             
              add(b);
              b.updateBoard();
          }

@@ -19,39 +19,45 @@ public class GameEngine implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(Menu.celluarautomat==1){
+        update();
+          
+    }
+    
+    private void update(){
+        if(Menu.cellularAutomaton==Menu.CA.GOL){
 
-            CelluarAutomat.b.loadGrid();
-            if(CelluarAutomat.b.start==0) {try {
-                CelluarAutomat.g.updateGrid();generationNumber++;CelluarAutomat.w.write(generationNumber);
+            CellularAutomaton.b.loadGrid();
+            if(CellularAutomaton.b.start==0) {try {
+                CellularAutomaton.g.updateGrid();generationNumber++;CellularAutomaton.w.write(generationNumber);
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
 }
-            else if(CelluarAutomat.b.next==1) {try {
-                CelluarAutomat.g.updateGrid();generationNumber++;CelluarAutomat.w.write(generationNumber);CelluarAutomat.b.next=0;
+            else if(CellularAutomaton.b.next==1) {try {
+                CellularAutomaton.g.updateGrid();generationNumber++;CellularAutomaton.w.write(generationNumber);CellularAutomaton.b.next=0;
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
 }
-            CelluarAutomat.b.updateBoard();
+            CellularAutomaton.b.updateBoard();
         }
         else{ 
-            CelluarAutomat.bw.loadGrid();
-            if(CelluarAutomat.bw.start==0) {try {
-                CelluarAutomat.g.updateGrid();CelluarAutomat.w.write(generationNumber);generationNumber++;
+            CellularAutomaton.bw.loadGrid();
+            if(CellularAutomaton.bw.start==0) {try {
+                CellularAutomaton.g.updateGrid();CellularAutomaton.w.write(generationNumber);generationNumber++;
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
 }
-            else if(CelluarAutomat.bw.next==1) {try {
-                CelluarAutomat.g.updateGrid();CelluarAutomat.w.write(generationNumber);generationNumber++;CelluarAutomat.bw.next=0;
+            else if(CellularAutomaton.bw.next==1) {try {
+                CellularAutomaton.g.updateGrid();CellularAutomaton.w.write(generationNumber);generationNumber++;CellularAutomaton.bw.next=0;
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
 }
-            CelluarAutomat.bw.updateBoard();        
+            CellularAutomaton.bw.updateBoard();        
         }
+        
         
     }
 }

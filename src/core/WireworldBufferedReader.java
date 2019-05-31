@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JOptionPane;
-import core.GameEngine.*;
+import core.CellularAutomaton.*;
 import gui.Menu;
 
 public class WireworldBufferedReader {
@@ -17,9 +17,8 @@ public class WireworldBufferedReader {
 public WireworldBufferedReader(String path){
    FileReader fr = null;
    String linia = "";
-   int s=0;
    String state="";
-   
+
    if(path!=null){
    // OTWIERANIE PLIKU:
    try {
@@ -41,12 +40,12 @@ public WireworldBufferedReader(String path){
                 state=linia.substring(0, n);
                 x = Integer.parseInt(linia.substring(n+2, next));
                 y = Integer.parseInt(linia.substring(next+1, linia.length()));
-                if(state.equals("ElectronHead")==true) s=1;
-                else if(state.equals("ElectronTail")==true) s=2;
-                else if(state.equals("Conductor")==true) s=3;
+                if(state.equals("ElectronHead")==true) if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.HEAD);
+                else if(state.equals("ElectronTail")==true) if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.TAIL);
+                else if(state.equals("Conductor")==true) if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.CONDUCTOR);
                 else JOptionPane.showMessageDialog(null, "In file in line "+line+" is wrong cell's state!!");
                 
-            if(x<Menu.width&&x>=0&&y<Menu.height&&y>=0) GameEngine.g.load(x,y,s);
+            
 
             } catch (NumberFormatException w) {
                 JOptionPane.showMessageDialog(null, "In file in line "+line+" is wrong value!!");
@@ -69,8 +68,4 @@ public WireworldBufferedReader(String path){
     }
 }
 
-public static void main(String[]args){
-    
-    
-}
 }

@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JOptionPane;
-import core.GameEngine.*;
+import core.CellularAutomaton.*;
 import gui.Menu;
 
 public class GOLBufferedReader {
@@ -39,7 +39,7 @@ public GOLBufferedReader(String path){
                 x = Integer.parseInt(linia.substring(0, next));
                 y = Integer.parseInt(linia.substring(next+1, linia.length()));
                 
-            if(x<Menu.width&&x>=0&&y<Menu.height&&y>=0) GameEngine.g.load(x,y,1);
+            if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.ALIVE);
             
             } catch (NumberFormatException w) {
                 JOptionPane.showMessageDialog(null, "In file in line "+line+" is wrong value!!");
@@ -62,7 +62,4 @@ public GOLBufferedReader(String path){
     }
 }
 
-public static void main(String[]args){
-    
-}
 }

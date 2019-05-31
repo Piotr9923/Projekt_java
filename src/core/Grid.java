@@ -1,39 +1,49 @@
-
 package core;
 
 import gui.Menu;
 
 public class Grid {
 
-    private final int width=Menu.width;
-    private final int height=Menu.height;
+    private final int width=Menu.getCAWidth();
+    private final int height=Menu.getCAHeight();
+    private int n;
     
-    public Cell[][]grid=new Cell[height][width];
+    private Cell[][]grid=new Cell[height][width];
 
+    private Cell[] neighbourhood=new Cell[8];
+
+    
     public Grid(){
-      
+        for(int a=0;a<8;a++) neighbourhood[a]=new Cell();
+         
+         
           for(int i=0;i<height;i++)
              for(int j=0;j<width;j++) grid[i][j]=new Cell();
    }
     
     
-    int countNeighbourhood(int y,int x){
-        int how_many_neighbourhood=0;
-            
- 	/*sprawdzenie czy		**sprawdzenie czy sąsiad		**zwiększenie liczby 
- 	**komórka posiada 		**jest żywą komórką			**żwych sąsiadów komórki
- 	**sąsiada 		*/	
-  	if (x-1>=0&&y-1>=0)		 if (grid[y-1][x-1].state==Cell.State.ALIVE)   how_many_neighbourhood++;
-    	if (x>=0&&y-1>=0)		 if (grid[y-1][x].state==Cell.State.ALIVE) 	how_many_neighbourhood++;
-    	if (x+1<width&&y-1>=0) 		 if (grid[y-1][x+1].state==Cell.State.ALIVE)   how_many_neighbourhood++;
-   	if (x-1>=0&&y>=0)		 if (grid[y][x-1].state==Cell.State.ALIVE) 	how_many_neighbourhood++;
-    	if (x+1<width&&y>=0)		 if (grid[y][x+1].state==Cell.State.ALIVE) 	how_many_neighbourhood++;
-    	if (x-1>=0&&y+1<height)		 if (grid[y+1][x-1].state==Cell.State.ALIVE)   how_many_neighbourhood++;
-    	if (x>=0&&y+1<height)		 if (grid[y+1][x].state==Cell.State.ALIVE) 	how_many_neighbourhood++;
-    	if (x+1<width&&y+1<height)	 if (grid[y+1][x+1].state==Cell.State.ALIVE)   how_many_neighbourhood++;
+    public Cell getCell(int y, int x){
+        return grid[y][x];
+    }
+    
+    public void setCell(int y,int x,Cell c){
         
-        return how_many_neighbourhood;
-     }
+        grid[y][x]=c;
+        
+    }
+    
+    void setNeighbourhood(int y,int x){
+        n=0;
+        
+ 	if (x-1>=0&&y-1>=0)         {neighbourhood[n]=grid[y-1][x-1];n++;}
+    	if (x>=0&&y-1>=0)           {neighbourhood[n]=grid[y-1][x];n++;}
+    	if (x+1<width&&y-1>=0)      {neighbourhood[n]=grid[y-1][x+1];n++;}
+   	if (x-1>=0&&y>=0)           {neighbourhood[n]=grid[y][x-1];n++;}
+    	if (x+1<width&&y>=0)        {neighbourhood[n]=grid[y][x+1];n++;}
+    	if (x-1>=0&&y+1<height)     {neighbourhood[n]=grid[y+1][x-1];n++;}
+    	if (x>=0&&y+1<height)       {neighbourhood[n]=grid[y+1][x];n++;}
+    	if (x+1<width&&y+1<height)  {neighbourhood[n]=grid[y+1][x+1];n++;}
+    }
     
 
     void updateGrid(){
@@ -43,17 +53,21 @@ public class Grid {
         	for(int x=0;x<width;x++)
         	{
                     
-                    int how_many_neighbourhood=countNeighbourhood(y,x);
+                   setNeighbourhood(y,x);
                    
+                   CANeighbourhood.countNeighbourhood(neighbourhood, n);
+                   
+                   int howManyNeighbourhood=CANeighbourhood.howManyNeighbourhood();
+                                        
                     if(Menu.cellularAutomaton==Menu.CA.GOL){                
-                        if(grid[y][x].state==Cell.State.DEAD&&how_many_neighbourhood==3) {grid[y][x].change=true;}
-                        if(grid[y][x].state==Cell.State.ALIVE&&(how_many_neighbourhood<2||how_many_neighbourhood>3)){grid[y][x].change=true;}
+                        if(grid[y][x].state==Cell.State.DEAD&&howManyNeighbourhood==3) {grid[y][x].change=true;}
+                        if(grid[y][x].state==Cell.State.ALIVE&&(howManyNeighbourhood<2||howManyNeighbourhood>3)){grid[y][x].change=true;}
                 
                     }
                     else{
                        if(grid[y][x].state==Cell.State.HEAD) {grid[y][x].change=true;};
                        if(grid[y][x].state==Cell.State.TAIL) {grid[y][x].change=true;};
-                       if(grid[y][x].state==Cell.State.CONDUCTOR&&(how_many_neighbourhood==1||how_many_neighbourhood==2)){grid[y][x].change=true;}
+                       if(grid[y][x].state==Cell.State.CONDUCTOR&&(howManyNeighbourhood==1||howManyNeighbourhood==2)){grid[y][x].change=true;}
                      }
         	}
             }
