@@ -1,4 +1,4 @@
-package core;
+package gui;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;

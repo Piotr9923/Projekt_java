@@ -20,8 +20,8 @@ import javax.swing.JPanel;
 
  public class BoardGOL extends JPanel implements ActionListener, MouseListener, MouseMotionListener {
 
-        private final int width=Menu.width;
-        private final int height=Menu.height;
+        private final int width=Menu.getCAWidth();
+        private final int height=Menu.getCAHeight();
         private int boardWidth,boardLocation;
         private Cell[][]grid=new Cell[height][width];
         
@@ -81,10 +81,7 @@ import javax.swing.JPanel;
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            
-            long czasRozpoczecia = System.currentTimeMillis();
-
-            
+          
             n.setBounds(boardWidth*5+150, height * 10 + 15, 35, 20);
             n.setText(GameEngine.generationNumber+"");
             if(ile==0) add(n);
@@ -158,15 +155,7 @@ import javax.swing.JPanel;
             }
             if(ile==0) {start=1;edit=1;}
            ile++;
-           
-           
-           long czasZakonczenia = System.currentTimeMillis();
 
-       long czasTrwania = czasZakonczenia - czasRozpoczecia;
-
-       System.out.println("Czas trwania: " + czasTrwania);
-         
-       
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -211,16 +200,16 @@ import javax.swing.JPanel;
            
         }
 
-        public void loadGrid(){
+       public void loadGrid(){
             
             for(int i=0;i<height;i++)
-                for(int j=0;j<width;j++) CellularAutomaton.g.grid[i][j].state=grid[i][j].state;
+                for(int j=0;j<width;j++) CellularAutomaton.g.setCell(i, j, grid[i][j]);
         }
          
         public void updateBoard(){
             
             for(int i=0;i<height;i++)
-                for(int j=0;j<width;j++) grid[i][j].state=CellularAutomaton.g.grid[i][j].state;
+                for(int j=0;j<width;j++) grid[i][j]=CellularAutomaton.g.getCell(i, j);
             
             repaint();
     

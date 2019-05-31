@@ -22,11 +22,11 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
     JButton btnOk, btnBrowse;
     JButton btnGol,btnWW;
     
-//Pola tekstowe umożliwiające wprowadzenie szerokości (w1), wysokości (h1) planszy, czasu generacji(t1), nazwy pliku wynikowego(f1)
+//Pola tekstowe umożliwiające wprowadzenie szerokości, wysokości planszy, czasu generacji, nazwy pliku wynikowego
     JTextField widthTextField, heightTextField, timeTextField, fileTextField;
     
 //Zmienne przechowujące wprowadzone ustawienia
-    public static int width = 40, height = 40, time;
+    private static int width = 40, height = 40, time;
     public static String filename="";
     public static CA cellularAutomaton=CA.WW;
     
@@ -36,8 +36,8 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
     public static String headColor="BLACK", tailColor="BLACK", conductorColor="BLACK", emptyColor="BLACK";
     
 //Zmienne pomocnicze przy wyborze koloru stanu komórki
-    int indexH, indexT, indexC, indexE;
-    int indexLive, indexDead;
+    private int indexH, indexT, indexC, indexE;
+    private int indexLive, indexDead;
     
 //Kolory stanów Game of Life
     public static String liveColor="BLACK", deadColor="BLACK";
@@ -331,8 +331,8 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         
     //Wczytanie wpisanych danych. Gdy są błędne wyświetla się kominikat
         void confirmSettings(){
-        
-        int ok=0;
+            //Zmienna pomocnicza wskazująca poprawość danych
+            int ok=0;
         
             //Sprawdznie czy w polu jest podana poprawna wartość
             //Jeśli wartość jest zła to wyświetla się komunikat i zmienna ok=1
@@ -445,5 +445,15 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         add(btnBrowse);         btnBrowse.setBounds(150+110, 500, 100, 30);     
         add(btnOk);             btnOk.setBounds(85+110, 560, 55, 30);           
 
+        }
+        
+        public static int getCAWidth(){
+            return width;
+        }
+        public static int getCAHeight(){
+            return height;
+        }
+        public static int getCATime(){
+            return time;
         }
 }
