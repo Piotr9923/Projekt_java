@@ -31,12 +31,12 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
     public static CA cellularAutomaton=CA.WW;
     
 //Rozwijane Menu
-    private JComboBox<String> cHead, cTail, cConductor, cEmpty, cDead, cAlive;
+    private JComboBox<String> cHead, cTail, cConductor, cEmpty, cDead, cAlive,cShape;
     //Kolory stanów Wireworld
-    public static String headColor="BLACK", tailColor="BLACK", conductorColor="BLACK", emptyColor="BLACK";
+    public static String headColor="BLACK", tailColor="BLACK", conductorColor="BLACK", emptyColor="BLACK",shape="SQUARE";
     
 //Zmienne pomocnicze przy wyborze koloru stanu komórki
-    private int indexH, indexT, indexC, indexE;
+    private int indexH, indexT, indexC, indexE,indexS;
     private int indexLive, indexDead;
     
 //Kolory stanów Game of Life
@@ -46,9 +46,15 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
     public static String filepath;
     
 //Etykiety zawierające nazwy wprowadzanych wartości
-    JLabel widthJLabel, heightJLabel, timeJLabel, headJLabel, tailJLabel, conductorJLabel, emptyJLabel, fileJLabel, deadJLabel, aliveLabel, browseJLabel;
+    JLabel widthJLabel, heightJLabel, timeJLabel, headJLabel, tailJLabel, conductorJLabel, emptyJLabel, fileJLabel, deadJLabel, aliveJLabel, browseJLabel,shapeJLabel;
 
-
+//Grupa przycisków czy chcemy zapisać układ komórek do pliku teksowego
+    private ButtonGroup yesNo;
+    
+//Zmienna wskazująca czy chcemy zapisać układ komórek
+    private static boolean save=true;
+    
+JRadioButton yes,no;
     public Menu() {
         super("Menu");
         setSize(500, 650);
@@ -59,6 +65,16 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        yesNo=new ButtonGroup();
+       
+        yes=new JRadioButton("yes",true);
+        yes.addActionListener(this);
+        
+        no=new JRadioButton("no",false);
+        no.addActionListener(this);
+        
+        yesNo.add(yes);
+        yesNo.add(no);
         
     //Dodanie przycisku umożliwiającego wybór Game of life
         btnGol = new JButton(new ImageIcon(getClass().getResource("/image/gol_name.png")));
@@ -100,7 +116,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         
         /**********************************/
     //Nazwa pliku wynikowego
-        fileJLabel = new JLabel("Output file name");
+        fileJLabel = new JLabel("Output file");
 
         fileTextField = new JTextField("name");
         
@@ -174,7 +190,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         
         /**********************************/
         //Kolor żywej komórki
-            aliveLabel = new JLabel("Live color");
+            aliveJLabel = new JLabel("Live color");
 
             cAlive = new JComboBox<String>(choices);
             cAlive.addItemListener(
@@ -200,6 +216,26 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
                         }
                     }
             );
+            
+            
+        //Możliwe kształty komórki do wyboru
+            String[] shapes = {"SQUARE", "CIRCLE"};
+       
+            
+            shapeJLabel = new JLabel("Cell shape");
+
+            cShape = new JComboBox<String>(shapes);
+            cShape.addItemListener(
+                    new ItemListener() {
+                        public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                indexS = cShape.getSelectedIndex();
+                            }
+                        }
+                    }
+            );
+            
+            
         
     /**********************************/
     //Wybór pliku z danymi
@@ -252,7 +288,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         if (source == btnOk) {
             
      //Utworzenie folderu do którego zapisywane będą pliki wynikowe
-            new File("Results").mkdir();
+           new File("Results").mkdir();
             
             confirmSettings();
         
@@ -260,6 +296,16 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         //Gdy został wciśnięty przycisk "Browse" to uruchamia się klasa do przeglądania plików
         else if (source == btnBrowse) {
             new FileBrowser();
+        }
+        
+        else if(source==yes){
+            save=true;
+            fileTextField.setLocation(310, 200);
+        }
+        else if (source==no){
+            save=false;
+            fileTextField.setLocation(-310, -200);
+
         }
 
     }
@@ -377,16 +423,13 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
             if (cellularAutomaton == CA.GOL) {
                 liveColor = cAlive.getItemAt(indexLive);
                 deadColor = cDead.getItemAt(indexDead);
+                shape=cShape.getItemAt(indexS);
             }
             //Przypisanie wartości nazwy pliku wynikowego
-            filename = fileTextField.getText();
+            if(save==true) filename = fileTextField.getText();
             //Przypisanie wartości ścieżki do pliku
             filepath=FileBrowser.path;
-            //Sprawdzenie czy nazwa pliku wynikowego jest dłuższa niż 1 i czy nie jest znakiem spacji
-            if (filename.length() < 1 || filename.charAt(0) == ' ') {
-                JOptionPane.showMessageDialog(null, "In field File name is wrong value!!");
-                ok = 1;
-            }
+            
 
             //Jeśli podane wartości są poprawne, to program czyta dane z pliku tekstowego i uruchamia odpowiednią planszę
             if (ok == 0) {
@@ -406,16 +449,22 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         add(timeJLabel);        timeJLabel.setBounds(20+110, 140, 130, 25);
         add(timeTextField);     timeTextField.setBounds(150+110, 140, 50, 25);
         add(fileJLabel);        fileJLabel.setBounds(20+110, 200, 130, 25);
-        add(fileTextField);     fileTextField.setBounds(150+110, 200, 50, 25);
-
-        add(aliveLabel);        aliveLabel.setBounds(20+110, 260, 130, 25);
+        add(fileTextField);     fileTextField.setBounds(200+110, 200, 50, 25);
+        
+        add(yes);               yes.setBounds(150+110, 183, 50, 25);
+        add(no);                no.setBounds(150+110, 213, 50, 25);
+        
+        add(aliveJLabel);       aliveJLabel.setBounds(20+110, 260, 130, 25);
         add(cAlive);            cAlive.setBounds(150+110, 260, 80, 20);
         add(deadJLabel);        deadJLabel.setBounds(20+110, 320, 130, 25);
         add(cDead);             cDead.setBounds(150+110, 320, 80, 20);
 
-        add(browseJLabel);      browseJLabel.setBounds(20+110, 380, 130, 25);
-        add(btnBrowse);         btnBrowse.setBounds(150+110, 380, 100, 30);
-        add(btnOk);             btnOk.setBounds(85+110, 440, 55, 30);
+        add(shapeJLabel);       shapeJLabel.setBounds(20+110, 380, 130, 25);
+        add(cShape);            cShape.setBounds(150+110, 380, 80, 20); 
+        
+        add(browseJLabel);      browseJLabel.setBounds(20+110, 440, 130, 25);
+        add(btnBrowse);         btnBrowse.setBounds(150+110, 440, 100, 30);
+        add(btnOk);             btnOk.setBounds(85+110, 500, 55, 30);
 
             
         }
@@ -429,8 +478,12 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         add(heightTextField);   heightTextField.setBounds(150+110, 80, 50, 25); 
         add(timeJLabel);        timeJLabel.setBounds(20+110, 140, 130, 25);    
         add(timeTextField);     timeTextField.setBounds(150+110, 140, 50, 25);  
-        add(fileJLabel);        fileJLabel.setBounds(20+110, 200, 130, 25);    
-        add(fileTextField);     fileTextField.setBounds(150+110, 200, 50, 25);  
+        add(fileJLabel);        fileJLabel.setBounds(20+110, 200, 130, 25);   
+        add(fileTextField);     fileTextField.setBounds(200+110, 200, 50, 25);
+        
+        add(yes);               yes.setBounds(150+110, 183, 50, 25);
+        add(no);                no.setBounds(150+110, 213, 50, 25);
+  
         
         add(emptyJLabel);       emptyJLabel.setBounds(20+110, 260, 130, 25);    
         add(cEmpty);            cEmpty.setBounds(150+110, 260, 80, 20);         
@@ -440,7 +493,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         add(cTail);             cTail.setBounds(150+110, 380, 80, 20);          
         add(conductorJLabel);   conductorJLabel.setBounds(20+110, 440, 130, 25);
         add(cConductor);        cConductor.setBounds(150+110, 440, 80, 20);     
-            
+        
         add(browseJLabel);      browseJLabel.setBounds(20+110, 500, 130, 25);   
         add(btnBrowse);         btnBrowse.setBounds(150+110, 500, 100, 30);     
         add(btnOk);             btnOk.setBounds(85+110, 560, 55, 30);           
@@ -450,10 +503,16 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
         public static int getCAWidth(){
             return width;
         }
+        
         public static int getCAHeight(){
             return height;
         }
+        
         public static int getCATime(){
             return time;
+        }
+        
+        public static boolean getSave(){
+            return save;
         }
 }

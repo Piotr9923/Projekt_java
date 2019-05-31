@@ -51,8 +51,8 @@ import javax.swing.JPanel;
         //Sprawdznie czy dana generacja jest pierwszą czy nie
         public int ile = 0;
         //Wczytanie obrazka z odpowiednim kolorem do danego stanu komórki
-        ImageIcon live = new ImageIcon(getClass().getResource("/image/" + Menu.liveColor + ".png"));
-        ImageIcon dead = new ImageIcon(getClass().getResource("/image/" + Menu.deadColor + ".png"));
+        ImageIcon live = new ImageIcon(getClass().getResource("/image/" + Menu.liveColor + Menu.shape + ".png"));
+        ImageIcon dead = new ImageIcon(getClass().getResource("/image/" + Menu.deadColor + Menu.shape + ".png"));
         
         public int numberShape=1;
       

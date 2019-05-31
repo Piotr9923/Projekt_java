@@ -51,10 +51,10 @@ import javax.swing.JPanel;
         public int ile = 0;
         
     //Wczytanie obrazka z odpowiednim kolorem do danego stanu komórki
-        ImageIcon empty = new ImageIcon(getClass().getResource("/image/" + Menu.emptyColor + ".png"));
-        ImageIcon head = new ImageIcon(getClass().getResource("/image/" + Menu.headColor + ".png"));
-        ImageIcon tail = new ImageIcon(getClass().getResource("/image/" + Menu.tailColor + ".png"));
-        ImageIcon conductor = new ImageIcon(getClass().getResource("/image/" + Menu.conductorColor + ".png"));
+        ImageIcon empty = new ImageIcon(getClass().getResource("/image/" + Menu.emptyColor + "SQUARE.png"));
+        ImageIcon head = new ImageIcon(getClass().getResource("/image/" + Menu.headColor + "SQUARE.png"));
+        ImageIcon tail = new ImageIcon(getClass().getResource("/image/" + Menu.tailColor + "SQUARE.png"));
+        ImageIcon conductor = new ImageIcon(getClass().getResource("/image/" + Menu.conductorColor + "SQUARE.png"));
 
         public int numberShape=1;
       
