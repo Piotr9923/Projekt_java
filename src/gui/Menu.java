@@ -15,28 +15,38 @@ import java.awt.event.KeyListener;
 
 
 public class Menu extends JFrame implements ActionListener , MouseListener, KeyListener {
-    //Przyciski umożliwiające wybór pliku z danymi oraz zakończenie działanie Menu
-    JButton btn, browse1;
-    JButton btn_gol,btn_ww;
-    //Pola tekstowe umożliwiające wprowadzenie szerokości (w1), wysokości (h1) planszy, czasu generacji(t1), nazwy pliku wynikowego(f1)
-    JTextField w1, h1, t1, f1;
-    //Zmienne przechowujące wprowadzone ustawienia
+    
+    public enum CA{GOL,WW};
+    
+//Przyciski umożliwiające wybór pliku z danymi oraz zakończenie działanie Menu
+    JButton btnOk, btnBrowse;
+    JButton btnGol,btnWW;
+    
+//Pola tekstowe umożliwiające wprowadzenie szerokości (w1), wysokości (h1) planszy, czasu generacji(t1), nazwy pliku wynikowego(f1)
+    JTextField widthTextField, heightTextField, timeTextField, fileTextField;
+    
+//Zmienne przechowujące wprowadzone ustawienia
     public static int width = 40, height = 40, time;
     public static String filename="";
-    public static int cellularAutomaton=0;
+    public static CA cellularAutomaton=CA.WW;
     
-    //Rozwijane Menu
-    private JComboBox<String> ch, ct, cd, ce, cdc, clc;
+//Rozwijane Menu
+    private JComboBox<String> cHead, cTail, cConductor, cEmpty, cDead, cAlive;
     //Kolory stanów Wireworld
-    public static String head_color="BLACK", tail_color="BLACK", conductor_color="BLACK", empty_color="BLACK";
-    //Zmienne pomocnicze przy wyborze kolory stanu
-    int index_h = 0, index_t = 0, index_d = 0, index_e = 0;
-    int index_live, index_dead;
-    //Kolory stanów Game of Life
-    public static String live_color="BLACK", dead_color="BLACK";
-    //Ścieżka do pliku z danymi
+    public static String headColor="BLACK", tailColor="BLACK", conductorColor="BLACK", emptyColor="BLACK";
+    
+//Zmienne pomocnicze przy wyborze koloru stanu komórki
+    int indexH, indexT, indexC, indexE;
+    int indexLive, indexDead;
+    
+//Kolory stanów Game of Life
+    public static String liveColor="BLACK", deadColor="BLACK";
+    
+//Ścieżka do pliku z danymi
     public static String filepath;
-            JLabel w, h, t, eh, et, d, ee, f, edc, elc, browse;
+    
+//Etykiety zawierające nazwy wprowadzanych wartości
+    JLabel widthJLabel, heightJLabel, timeJLabel, headJLabel, tailJLabel, conductorJLabel, emptyJLabel, fileJLabel, deadJLabel, aliveLabel, browseJLabel;
 
 
     public Menu() {
@@ -49,205 +59,162 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        //Etykiety zawierające nazwy wprowadzanych wartości
         
-        //Dodanie przycisku umożliwiającego wybór Game of life
-        btn_gol = new JButton(new ImageIcon(getClass().getResource("/image/gol_name.png")));
-        btn_gol.setBounds(150, 100, 165, 143);
-        add(btn_gol);
-        btn_gol.addActionListener(this);
-        btn_gol.addMouseListener(this);
+    //Dodanie przycisku umożliwiającego wybór Game of life
+        btnGol = new JButton(new ImageIcon(getClass().getResource("/image/gol_name.png")));
+        btnGol.setBounds(150, 100, 165, 143);
+        add(btnGol);
+        btnGol.addActionListener(this);
+        btnGol.addMouseListener(this);
         
-        //Dodanie przycisku umożliwiającego wybór Wireworld
-        btn_ww = new JButton(new ImageIcon(getClass().getResource("/image/ww_name.png")));
-        btn_ww.setBounds(80, 350, 300, 120);
-        add(btn_ww);
-        btn_ww.addActionListener(this);
-        btn_ww.addMouseListener(this);
+    //Dodanie przycisku umożliwiającego wybór Wireworld
+        btnWW = new JButton(new ImageIcon(getClass().getResource("/image/ww_name.png")));
+        btnWW.setBounds(80, 350, 300, 120);
+        add(btnWW);
+        btnWW.addActionListener(this);
+        btnWW.addMouseListener(this);
         
-        /**********************************/
-        //Szerokość
-        w = new JLabel("Width");
-        w.setBounds(20, 20, -300, -300);
-        add(w);
+    /**********************************/
+     //Szerokość
+        widthJLabel = new JLabel("Width");
         
-        w1 = new JTextField("40");
-        w1.setBounds(150, 20, -300, -300);
-        w1.addKeyListener(this);
-        add(w1);
+        widthTextField = new JTextField("40");
+        widthTextField.addKeyListener(this);
+  
         
      
-        /**********************************/
-        //Wysokość
-        h = new JLabel("Height");
-        h.setBounds(20, 80, -300, -300);
-        add(h);
+    /**********************************/
+    //Wysokość
+        heightJLabel = new JLabel("Height");
+        heightJLabel.setBounds(20, 80, -300, -300);
 
-        h1 = new JTextField("40");
-        h1.setBounds(150, 80, -300, -300);
-        h1.addKeyListener(this);
-        add(h1);
+        heightTextField = new JTextField("40");
+        heightTextField.addKeyListener(this);
       
-        /**********************************/
-        //Czas generacji
-        t = new JLabel("Generation time [ms]");
-        t.setBounds(20, 140, -300, -300);
-        add(t);
+    /**********************************/
+    //Czas generacji
+        timeJLabel = new JLabel("Generation time [ms]");
 
-        t1 = new JTextField("100");
-        t1.setBounds(150, 140, -300, -300);
-        t1.addKeyListener(this);
-        add(t1);
+        timeTextField = new JTextField("100");
+        timeTextField.addKeyListener(this);
         
         /**********************************/
-        //Nazwa pliku wynikowego
-        f = new JLabel("Output file name");
-        f.setBounds(20, 200, -300, -300);
-        add(f);
+    //Nazwa pliku wynikowego
+        fileJLabel = new JLabel("Output file name");
 
-        f1 = new JTextField("name");
-        f1.setBounds(150, 200, -300, -300);
-        add(f1);
+        fileTextField = new JTextField("name");
         
-        //Możliwe kolory do wyboru
+    //Możliwe kolory do wyboru
         String[] choices = {"BLACK", "RED", "BLUE", "GREEN", "YELLOW", "WHITE"};
        
-     //Sprawdzenie dla jakiego automatu wybierany kolory i wyświetlenie odpowiedznych stanów
-        //Wybór kolorów dla Wireworld
-     
-            /**********************************/
-            //Kolor pustej komórki
-            ee = new JLabel("Empty Color");
-            ee.setBounds(20, 260, -300, -300);
-            add(ee);
-
-            ce = new JComboBox<String>(choices);
-            ce.setBounds(150, 260, -300, -300);
-            ce.addItemListener(
-                    new ItemListener() {
-                        public void itemStateChanged(ItemEvent event) {
-                            if (event.getStateChange() == ItemEvent.SELECTED) {
-                                index_e = ce.getSelectedIndex();
-                            }
-                        }
-                    }
-            );
-            add(ce);
-            /**********************************/
-            //Kolor głowy elektronu
-            eh = new JLabel("ElectronHead Color");
-            eh.setBounds(20, 320, -300, -300);
-            add(eh);
-
-            ch = new JComboBox<String>(choices);
-            ch.setBounds(150, 320, -300, -300);
-            ch.addItemListener(
-                    new ItemListener() {
-                        public void itemStateChanged(ItemEvent event) {
-                            if (event.getStateChange() == ItemEvent.SELECTED) {
-                                index_h = ch.getSelectedIndex();
-                            }
-                        }
-                    }
-            );
-            add(ch);
-            /**********************************/
-            //Kolor ogonu elektronu
-            et = new JLabel("ElectronTail Color");
-            et.setBounds(20, 380, -300, -300);
-            add(et);
-
-            ct = new JComboBox<String>(choices);
-            ct.setBounds(150, 380, -300, -300);
-            ct.addItemListener(
-                    new ItemListener() {
-                        public void itemStateChanged(ItemEvent event) {
-                            if (event.getStateChange() == ItemEvent.SELECTED) {
-                                index_t = ct.getSelectedIndex();
-                            }
-                        }
-                    }
-            );
-            add(ct);
-            /**********************************/
-            //Kolor przewodnika
-            d = new JLabel("Conductor Color");
-            d.setBounds(20, 440, -300, -300);
-            add(d);
-
-            cd = new JComboBox<String>(choices);
-            cd.setBounds(150, 440, -300, -300);
-            cd.addItemListener(
-                    new ItemListener() {
-                        public void itemStateChanged(ItemEvent event) {
-                            if (event.getStateChange() == ItemEvent.SELECTED) {
-                                index_d = cd.getSelectedIndex();
-                            }
-                        }
-                    }
-            );
-            add(cd);
-            //Wybór kolorów dla Gry w życie
-        
-            /**********************************/
-            //Kolor żywej komórki
-            elc = new JLabel("Live color");
-            elc.setBounds(20, 260, -300, -300);
-            add(elc);
-
-            clc = new JComboBox<String>(choices);
-            clc.setBounds(150, 260, -300, -300);
-            clc.addItemListener(
-                    new ItemListener() {
-                        public void itemStateChanged(ItemEvent event) {
-                            if (event.getStateChange() == ItemEvent.SELECTED) {
-                                index_live = clc.getSelectedIndex();
-                            }
-                        }
-                    }
-            );
-            add(clc);
-            /**********************************/
-            //Kolor martwej komórki
-            edc = new JLabel("Dead color");
-            edc.setBounds(20, 320, -300, -300);
-            add(edc);
-
-            cdc = new JComboBox<String>(choices);
-            cdc.setBounds(150, 320, -300, -300);
-            cdc.addItemListener(
-                    new ItemListener() {
-                        public void itemStateChanged(ItemEvent event) {
-                            if (event.getStateChange() == ItemEvent.SELECTED) {
-                                index_dead = cdc.getSelectedIndex();
-                            }
-                        }
-                    }
-            );
-            add(cdc);
-        
-        /**********************************/
-        //Wybór pliku z danymi
-        browse = new JLabel("File");
+    //Sprawdzenie dla jakiego automatu wybierany kolory i wyświetlenie odpowiedznych stanów
     
-        add(browse);
+    //Wybór kolorów dla Wireworld
+     
+        /**********************************/
+        //Kolor pustej komórki
+            emptyJLabel = new JLabel("Empty Color");
 
-        browse1 = new JButton("Browse");
-        add(browse1);
-        browse1.addActionListener(this);
+            cEmpty = new JComboBox<String>(choices);
+            cEmpty.addItemListener(
+                    new ItemListener() {
+                        public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                indexE = cEmpty.getSelectedIndex();
+                            }
+                        }
+                    }
+            );
+        /**********************************/
+        //Kolor głowy elektronu
+            headJLabel = new JLabel("ElectronHead Color");
+
+            cHead = new JComboBox<String>(choices);
+            cHead.addItemListener(
+                    new ItemListener() {
+                        public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                indexH = cHead.getSelectedIndex();
+                            }
+                        }
+                    }
+            );
+        /**********************************/
+        //Kolor ogonu elektronu
+            tailJLabel = new JLabel("ElectronTail Color");
+
+            cTail = new JComboBox<String>(choices);
+            cTail.addItemListener(
+                    new ItemListener() {
+                        public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                indexT = cTail.getSelectedIndex();
+                            }
+                        }
+                    }
+            );
+            
+        /**********************************/
+        //Kolor przewodnika
+            conductorJLabel = new JLabel("Conductor Color");
+
+            cConductor = new JComboBox<String>(choices);
+            cConductor.addItemListener(
+                    new ItemListener() {
+                        public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                indexC = cConductor.getSelectedIndex();
+                            }
+                        }
+                    }
+            );
+            
+            
+        //Wybór kolorów dla Gry w życie
         
         /**********************************/
-        //Zakończenie Menu
-        btn = new JButton("OK");
-        if (cellularAutomaton == 0) {
-            btn.setBounds(85, 560, -300, -300);
-        } else if (cellularAutomaton == 1) {
-            btn.setBounds(85, 440, -300, -300);
-        }
-        add(btn);
-        btn.addActionListener(this);
+        //Kolor żywej komórki
+            aliveLabel = new JLabel("Live color");
 
+            cAlive = new JComboBox<String>(choices);
+            cAlive.addItemListener(
+                    new ItemListener() {
+                        public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                indexLive = cAlive.getSelectedIndex();
+                            }
+                        }
+                    }
+            );
+        /**********************************/
+        //Kolor martwej komórki
+            deadJLabel = new JLabel("Dead color");
+
+            cDead = new JComboBox<String>(choices);
+            cDead.addItemListener(
+                    new ItemListener() {
+                        public void itemStateChanged(ItemEvent event) {
+                            if (event.getStateChange() == ItemEvent.SELECTED) {
+                                indexDead = cDead.getSelectedIndex();
+                            }
+                        }
+                    }
+            );
+        
+    /**********************************/
+    //Wybór pliku z danymi
+        browseJLabel = new JLabel("File");
+    
+
+        btnBrowse = new JButton("Browse");
+        btnBrowse.addActionListener(this);
+        
+        /**********************************/
+    //Zakończenie Menu
+        btnOk = new JButton("OK");
+               btnOk.addActionListener(this);
         setVisible(true);
+
     }
 
     public static void main(String[] args) {
@@ -257,129 +224,60 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //zmienna wskazująca czy podane wartości są poprawne (ok=0 są poprane, ok =1 są złe)
-        int ok = 0;
-        
+
         Object source = e.getSource();
-        
-        
-        if(source ==w1){
+    
+        if (source == btnGol) {
             
-            System.out.println("ta");
-             
-        }
-        
-        
-        
-        if (source == btn_gol) {
-            
-            cellularAutomaton=1;
+            cellularAutomaton=CA.GOL;
                     
-            btn_gol.setLocation(-300, -300);
-            btn_ww.setLocation(-300, -300);
+            btnGol.setLocation(-300, -300);
+            btnWW.setLocation(-300, -300);
             
             uploadGOLMenu();
             
         }
         
-        if (source == btn_ww) {
+        if (source == btnWW) {
             
-            cellularAutomaton=0;
+            cellularAutomaton=CA.WW;
             
-            btn_gol.setLocation(-300, -300);
-            btn_ww.setLocation(-300, -300);
+            btnGol.setLocation(-300, -300);
+            btnWW.setLocation(-300, -300);
             
             uploadWireworldMenu();
         }
         
-        //Instrukcje wykonywane, gdy został wciśnięty przycisk "OK", zatwierdzający wprowadzone dane
-        if (source == btn) {
-            //Sprawdznie czy w polu jest podana poprawna wartość
-            //Jeśli wartość jest zła to wyświetla się komunikat i zmienna ok=1
-            try {
-                width = Integer.parseInt(w1.getText());
-                
-            } catch (NumberFormatException w) {
-                JOptionPane.showMessageDialog(null, "In field Width is wrong value!!");
-                ok = 1;
-            }
-            //Sprawdznie czy w polu jest podana poprawna wartość
-            //Jeśli wartość jest zła to wyświetla się komunikat i zmienna ok=1
-            try {
-                height = Integer.parseInt(h1.getText());
-               
-            } catch (NumberFormatException w) {
-                JOptionPane.showMessageDialog(null, "In field Height is wrong value!!");
-                ok = 1;
-            }
-            //Sprawdznie czy w polu jest podana poprawna wartość
-            //Jeśli wartość jest zła to wyświetla się komunikat i zmienna ok=1
-            try {
-                time = Integer.parseInt(t1.getText());
+    //Instrukcje wykonywane, gdy został wciśnięty przycisk "OK", zatwierdzający wprowadzone dane
+        if (source == btnOk) {
             
-            } catch (NumberFormatException w) {
-                JOptionPane.showMessageDialog(null, "In field Generation time is wrong value!!");
-                ok = 1;
-            }
-            //Sprawdznie czy został wybrany plik za danymi. Jeśli nie to wyświetli się komunikat
-            if (FileBrowser.path == null) {
-                JOptionPane.showMessageDialog(null, "You did not choose text file!!");
-            }
-            //Jeśli wybrane zostało Wireworld to przypisanie wartości poszczególnych kolorów
-            if (cellularAutomaton == 0) {
-                empty_color = ce.getItemAt(index_e);
-                head_color = ch.getItemAt(index_h);
-                tail_color = ct.getItemAt(index_t);
-                conductor_color = cd.getItemAt(index_d);
-                
-            }
-            //Jeśli wybrane zostało Game of Life to przypisanie wartości poszczególnych kolorów
-            if (cellularAutomaton == 1) {
-                live_color = clc.getItemAt(index_live);
-                dead_color = cdc.getItemAt(index_dead);
-            }
-            //Przypisanie wartości nazwy pliku wynikowego
-            filename = f1.getText();
-            //Przypisanie wartości ścieżki do pliku
-            filepath=FileBrowser.path;
-            //Sprawdzenie czy nazwa pliku wynikowego jest dłuższa niż 1 i czy nie jest znakiem spacji
-            if (filename.length() < 1 || filename.charAt(0) == ' ') {
-                JOptionPane.showMessageDialog(null, "In field File name is wrong value!!");
-                ok = 1;
-            }
-            //Utworzenie folderu do którego zapisywane będą pliki wynikowe
+     //Utworzenie folderu do którego zapisywane będą pliki wynikowe
             new File("Results").mkdir();
             
-
-            //Jeśli podane wartości są poprawne, to program czyta dane z pliku tekstowego i uruchamia odpowiednią planszę
-            if (ok == 0) {
-                dispose();
-
-                new CellularAutomaton();
-            }
+            confirmSettings();
         
         } 
         //Gdy został wciśnięty przycisk "Browse" to uruchamia się klasa do przeglądania plików
-        else if (source == browse1) {
+        else if (source == btnBrowse) {
             new FileBrowser();
         }
 
     }
     
-     @Override
+        @Override
 	public void mouseClicked(MouseEvent e) {
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-            if(e.getSource()==btn_gol) btn_gol.setIcon(new ImageIcon(getClass().getResource("/image/gol_animation.gif")));
-            else if(e.getSource()==btn_ww) btn_ww.setIcon(new ImageIcon(getClass().getResource("/image/ww_animation.gif")));
+            if(e.getSource()==btnGol) btnGol.setIcon(new ImageIcon(getClass().getResource("/image/gol_animation.gif")));
+            else if(e.getSource()==btnWW) btnWW.setIcon(new ImageIcon(getClass().getResource("/image/ww_animation.gif")));
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-            if(e.getSource()==btn_gol) btn_gol.setIcon(new ImageIcon(getClass().getResource("/image/gol_name.png")));
-            else if(e.getSource()==btn_ww) btn_ww.setIcon(new ImageIcon(getClass().getResource("/image/ww_name.png")));
+            if(e.getSource()==btnGol) btnGol.setIcon(new ImageIcon(getClass().getResource("/image/gol_name.png")));
+            else if(e.getSource()==btnWW) btnWW.setIcon(new ImageIcon(getClass().getResource("/image/ww_name.png")));
 	}
 
 	@Override
@@ -390,110 +288,162 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
 	public void mouseReleased(MouseEvent e) {
 	}
         
-         @Override
-    public void keyTyped(KeyEvent e) {
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        if(e.getSource()==widthTextField){
+
+            areSettingsCorrect(widthTextField);   
+        }
         
-    
-    }
+        if(e.getSource()==heightTextField){
 
-    @Override
-    public void keyPressed(KeyEvent e) {
+            areSettingsCorrect(heightTextField);  
+        }
         
-         
+        if(e.getSource()==timeTextField){
+
+            areSettingsCorrect(timeTextField);  
+        }
+        
     }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if(e.getSource()==w1){
-
-            try {
-                width = Integer.parseInt(w1.getText());
+        
+    //Sprawdzanie na bieżąco wprowadzanych danych i podświetlanie na czerwono pola, gdy są błędne
+        void areSettingsCorrect(JTextField textField){
+        
+        try {
+                 Integer.parseInt(textField.getText());
                 
-                w1.setBackground(Color.white);
-                if(width<=0) w1.setBackground(Color.red);
+                textField.setBackground(Color.white);
+                if(Integer.parseInt(textField.getText())<=0) textField.setBackground(Color.red);
             } catch (NumberFormatException w) {
-                w1.setBackground(Color.red);
+                textField.setBackground(Color.red);
             }
-            
-        }
-        if(e.getSource()==h1){
-
-            try {
-                height = Integer.parseInt(h1.getText());
-                h1.setBackground(Color.white);
-                if(height<=0) h1.setBackground(Color.red);
-            } catch (NumberFormatException w) {
-                h1.setBackground(Color.red);
-            }
-            
-        }
-        if(e.getSource()==t1){
-
-            try {
-                time = Integer.parseInt(t1.getText());
-                t1.setBackground(Color.white);
-                if(time<=0) t1.setBackground(Color.red);
-            } catch (NumberFormatException w) {
-                t1.setBackground(Color.red);
-            }
-            
-        }
-        
-        
-        
-        
         
     }
         
+    //Wczytanie wpisanych danych. Gdy są błędne wyświetla się kominikat
+        void confirmSettings(){
         
+        int ok=0;
         
+            //Sprawdznie czy w polu jest podana poprawna wartość
+            //Jeśli wartość jest zła to wyświetla się komunikat i zmienna ok=1
+            try {
+                width = Integer.parseInt(widthTextField.getText());
+                
+            } catch (NumberFormatException w) {
+                JOptionPane.showMessageDialog(null, "In field Width is wrong value!!");
+                ok = 1;
+            }
+            //Sprawdznie czy w polu jest podana poprawna wartość
+            //Jeśli wartość jest zła to wyświetla się komunikat i zmienna ok=1
+            try {
+                height = Integer.parseInt(heightTextField.getText());
+               
+            } catch (NumberFormatException w) {
+                JOptionPane.showMessageDialog(null, "In field Height is wrong value!!");
+                ok = 1;
+            }
+            //Sprawdznie czy w polu jest podana poprawna wartość
+            //Jeśli wartość jest zła to wyświetla się komunikat i zmienna ok=1
+            try {
+                time = Integer.parseInt(timeTextField.getText());
+            
+            } catch (NumberFormatException w) {
+                JOptionPane.showMessageDialog(null, "In field Generation time is wrong value!!");
+                ok = 1;
+            }
+            //Sprawdznie czy został wybrany plik za danymi. Jeśli nie to wyświetli się komunikat
+            if (FileBrowser.path == null) {
+                JOptionPane.showMessageDialog(null, "You did not choose text file!!");
+            }
+            //Jeśli wybrane zostało Wireworld to przypisanie wartości poszczególnych kolorów
+            if (cellularAutomaton == CA.WW) {
+                emptyColor = cEmpty.getItemAt(indexE);
+                headColor = cHead.getItemAt(indexH);
+                tailColor = cTail.getItemAt(indexT);
+                conductorColor = cConductor.getItemAt(indexC);
+                
+            }
+            //Jeśli wybrane zostało Game of Life to przypisanie wartości poszczególnych kolorów
+            if (cellularAutomaton == CA.GOL) {
+                liveColor = cAlive.getItemAt(indexLive);
+                deadColor = cDead.getItemAt(indexDead);
+            }
+            //Przypisanie wartości nazwy pliku wynikowego
+            filename = fileTextField.getText();
+            //Przypisanie wartości ścieżki do pliku
+            filepath=FileBrowser.path;
+            //Sprawdzenie czy nazwa pliku wynikowego jest dłuższa niż 1 i czy nie jest znakiem spacji
+            if (filename.length() < 1 || filename.charAt(0) == ' ') {
+                JOptionPane.showMessageDialog(null, "In field File name is wrong value!!");
+                ok = 1;
+            }
+
+            //Jeśli podane wartości są poprawne, to program czyta dane z pliku tekstowego i uruchamia odpowiednią planszę
+            if (ok == 0) {
+                dispose();
+
+                new CellularAutomaton();
+            }
+    }
+    
+    //Wcztanie Menu do Game of Life 
         void uploadGOLMenu(){
             
-        w.setBounds(20+110, 20, 50, 25);
-        w1.setBounds(150+110, 20, 50, 25);
-        h.setBounds(20+110, 80, 50, 25);
-        h1.setBounds(150+110, 80, 50, 25);
-        t.setBounds(20+110, 140, 130, 25);
-        t1.setBounds(150+110, 140, 50, 25);
-        f.setBounds(20+110, 200, 130, 25);
-        f1.setBounds(150+110, 200, 50, 25);
+        add(widthJLabel);       widthJLabel.setBounds(20+110, 20, 50, 25);
+        add(widthTextField);    widthTextField.setBounds(150+110, 20, 50, 25);
+        add(heightJLabel);      heightJLabel.setBounds(20+110, 80, 50, 25);
+        add(heightTextField);   heightTextField.setBounds(150+110, 80, 50, 25);
+        add(timeJLabel);        timeJLabel.setBounds(20+110, 140, 130, 25);
+        add(timeTextField);     timeTextField.setBounds(150+110, 140, 50, 25);
+        add(fileJLabel);        fileJLabel.setBounds(20+110, 200, 130, 25);
+        add(fileTextField);     fileTextField.setBounds(150+110, 200, 50, 25);
 
-        elc.setBounds(20+110, 260, 130, 25);
-        clc.setBounds(150+110, 260, 80, 20);
-        edc.setBounds(20+110, 320, 130, 25);
-        cdc.setBounds(150+110, 320, 80, 20);
+        add(aliveLabel);        aliveLabel.setBounds(20+110, 260, 130, 25);
+        add(cAlive);            cAlive.setBounds(150+110, 260, 80, 20);
+        add(deadJLabel);        deadJLabel.setBounds(20+110, 320, 130, 25);
+        add(cDead);             cDead.setBounds(150+110, 320, 80, 20);
 
-        browse.setBounds(20+110, 380, 130, 25);
-        browse1.setBounds(150+110, 380, 100, 30);
-        btn.setBounds(85+110, 440, 55, 30);
+        add(browseJLabel);      browseJLabel.setBounds(20+110, 380, 130, 25);
+        add(btnBrowse);         btnBrowse.setBounds(150+110, 380, 100, 30);
+        add(btnOk);             btnOk.setBounds(85+110, 440, 55, 30);
 
             
         }
 
-        
+    //Wczytanie Menu do Wireworld        
         void uploadWireworldMenu(){
             
-        w.setBounds(20+110, 20, 50, 25);
-        w1.setBounds(150+110, 20, 50, 25);
-        h.setBounds(20+110, 80, 50, 25);
-        h1.setBounds(150+110, 80, 50, 25);
-        t.setBounds(20+110, 140, 130, 25);
-        t1.setBounds(150+110, 140, 50, 25);
-        f.setBounds(20+110, 200, 130, 25);
-        f1.setBounds(150+110, 200, 50, 25);
+        add(widthJLabel);       widthJLabel.setBounds(20+110, 20, 50, 25);
+        add(widthTextField);    widthTextField.setBounds(150+110, 20, 50, 25);  
+        add(heightJLabel);      heightJLabel.setBounds(20+110, 80, 50, 25);     
+        add(heightTextField);   heightTextField.setBounds(150+110, 80, 50, 25); 
+        add(timeJLabel);        timeJLabel.setBounds(20+110, 140, 130, 25);    
+        add(timeTextField);     timeTextField.setBounds(150+110, 140, 50, 25);  
+        add(fileJLabel);        fileJLabel.setBounds(20+110, 200, 130, 25);    
+        add(fileTextField);     fileTextField.setBounds(150+110, 200, 50, 25);  
         
-        ee.setBounds(20+110, 260, 130, 25);
-        ce.setBounds(150+110, 260, 80, 20);
-        eh.setBounds(20+110, 320, 130, 25);
-        ch.setBounds(150+110, 320, 80, 20);
-        et.setBounds(20+110, 380, 130, 25);
-        ct.setBounds(150+110, 380, 80, 20);
-        d.setBounds(20+110, 440, 130, 25);
-        cd.setBounds(150+110, 440, 80, 20);
+        add(emptyJLabel);       emptyJLabel.setBounds(20+110, 260, 130, 25);    
+        add(cEmpty);            cEmpty.setBounds(150+110, 260, 80, 20);         
+        add(headJLabel);        headJLabel.setBounds(20+110, 320, 130, 25);    
+        add(cHead);             cHead.setBounds(150+110, 320, 80, 20);          
+        add(tailJLabel);        tailJLabel.setBounds(20+110, 380, 130, 25);     
+        add(cTail);             cTail.setBounds(150+110, 380, 80, 20);          
+        add(conductorJLabel);   conductorJLabel.setBounds(20+110, 440, 130, 25);
+        add(cConductor);        cConductor.setBounds(150+110, 440, 80, 20);     
             
-        browse.setBounds(20+110, 500, 130, 25);
-        browse1.setBounds(150+110, 500, 100, 30);
-        btn.setBounds(85+110, 560, 55, 30);
+        add(browseJLabel);      browseJLabel.setBounds(20+110, 500, 130, 25);   
+        add(btnBrowse);         btnBrowse.setBounds(150+110, 500, 100, 30);     
+        add(btnOk);             btnOk.setBounds(85+110, 560, 55, 30);           
 
         }
 }
