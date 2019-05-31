@@ -28,13 +28,13 @@ public class GameEngine implements ActionListener{
 
             CellularAutomaton.b.loadGrid();
             if(CellularAutomaton.b.start==0) {try {
-                CellularAutomaton.g.updateGrid();generationNumber++;CellularAutomaton.w.write(generationNumber);
+                CellularAutomaton.g.updateGrid();generationNumber++;if(Menu.getSave()==true)CellularAutomaton.w.write(generationNumber);
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
 }
             else if(CellularAutomaton.b.next==1) {try {
-                CellularAutomaton.g.updateGrid();generationNumber++;CellularAutomaton.w.write(generationNumber);CellularAutomaton.b.next=0;
+                CellularAutomaton.g.updateGrid();generationNumber++;if(Menu.getSave()==true)CellularAutomaton.w.write(generationNumber);CellularAutomaton.b.next=0;
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -44,13 +44,13 @@ public class GameEngine implements ActionListener{
         else{ 
             CellularAutomaton.bw.loadGrid();
             if(CellularAutomaton.bw.start==0) {try {
-                CellularAutomaton.g.updateGrid();CellularAutomaton.w.write(generationNumber);generationNumber++;
+                CellularAutomaton.g.updateGrid();generationNumber++;if(Menu.getSave()==true)CellularAutomaton.w.write(generationNumber);
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
 }
             else if(CellularAutomaton.bw.next==1) {try {
-                CellularAutomaton.g.updateGrid();CellularAutomaton.w.write(generationNumber);generationNumber++;CellularAutomaton.bw.next=0;
+                CellularAutomaton.g.updateGrid();generationNumber++;if(Menu.getSave()==true) CellularAutomaton.w.write(generationNumber);CellularAutomaton.bw.next=0;
                 } catch (IOException ex) {
                     Logger.getLogger(GameEngine.class.getName()).log(Level.SEVERE, null, ex);
                 }
