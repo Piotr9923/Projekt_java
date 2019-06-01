@@ -119,7 +119,7 @@ public class CoreTest {
 		        Menu.cellularAutomaton=CA.GOL;
 		        
 		        for(int i=0;i<5;i++)
-		             for(int j=0;j<5;j++) grid[i][j].updateCell(i, j);
+		             for(int j=0;j<5;j++) grid[i][j].updateCell(j, i);
 		        
 		        Assert.assertTrue(grid[1][1].state==State.DEAD);
 		        Assert.assertTrue(grid[2][0].state==State.DEAD);
@@ -128,8 +128,49 @@ public class CoreTest {
 		        Assert.assertTrue(grid[0][0].state==State.ALIVE);
 		        Assert.assertTrue(grid[1][4].state==State.DEAD);
 		        
-		}	
-
+		}
+	
+	
+	@Test
+	public void getCellsetCellTest() {
+		
+		Menu.cellularAutomaton=CA.GOL;
+		Grid g=new Grid();
+		
+		Cell c=new Cell();
+		
+		c.state=State.ALIVE;
+		
+		g.setCell(3, 3, c);
+		g.setCell(7, 6, c);
+	
+        Assert.assertTrue(g.getCell(3, 3).state==State.ALIVE);
+  
+        Assert.assertTrue(g.getCell(7, 6).state==State.ALIVE);
+        
+        Assert.assertTrue(g.getCell(5, 1).state==State.DEAD);		
+	}
+	
+	
+	@Test
+	public void updateGridTest() {
+	
+		Menu.cellularAutomaton=CA.GOL;
+		Grid g=new Grid();
+		
+		Cell c=new Cell();
+		c.state=State.ALIVE;
+		
+		g.setCell(0, 0, c);
+		g.setCell(1, 0, c);
+		g.setCell(0, 1, c);
+		
+		Assert.assertTrue(g.getCell(1, 1).state==State.DEAD);
+		
+		g.updateGrid();
+		
+		Assert.assertTrue(g.getCell(1, 1).state==State.ALIVE);	
+	}
 	
 	
 }
