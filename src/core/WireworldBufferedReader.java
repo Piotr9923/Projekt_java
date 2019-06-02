@@ -40,9 +40,9 @@ public WireworldBufferedReader(String path){
                 state=linia.substring(0, n);
                 x = Integer.parseInt(linia.substring(n+2, next));
                 y = Integer.parseInt(linia.substring(next+1, linia.length()));
-                if(state.equals("ElectronHead")==true) if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.HEAD);
-                else if(state.equals("ElectronTail")==true) if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.TAIL);
-                else if(state.equals("Conductor")==true) if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.CONDUCTOR);
+                if(state.equals("ElectronHead")==true) {if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.HEAD);}
+                else if(state.equals("ElectronTail")==true){ if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.TAIL);}
+                else if(state.equals("Conductor")==true) {if(x<Menu.getCAWidth()&&x>=0&&y<Menu.getCAHeight()&&y>=0) CellularAutomaton.g.load(x,y,Cell.State.CONDUCTOR);}
                 else JOptionPane.showMessageDialog(null, "In file in line "+line+" is wrong cell's state!!");
                 
             
