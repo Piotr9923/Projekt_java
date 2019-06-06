@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class GameEngine implements ActionListener{
 
-    public static int generationNumber=0;
+    private static int generationNumber=0;
     
     public GameEngine(){
         
@@ -22,6 +22,11 @@ public class GameEngine implements ActionListener{
         update();
           
     }
+    
+    public static int getGenerationNumber(){
+        return generationNumber;
+    }
+    
     
     private void update(){
         if(Menu.cellularAutomaton==Menu.CA.GOL){

@@ -43,7 +43,7 @@ public class Menu extends JFrame implements ActionListener , MouseListener, KeyL
     public static String liveColor="BLACK", deadColor="BLACK";
     
 //Ścieżka do pliku z danymi
-    public static String filepath;
+    private static String filepath;
     
 //Etykiety zawierające nazwy wprowadzanych wartości
     JLabel widthJLabel, heightJLabel, timeJLabel, headJLabel, tailJLabel, conductorJLabel, emptyJLabel, fileJLabel, deadJLabel, aliveJLabel, browseJLabel,shapeJLabel;
@@ -239,7 +239,7 @@ JRadioButton yes,no;
         
     /**********************************/
     //Wybór pliku z danymi
-        browseJLabel = new JLabel("File");
+        browseJLabel = new JLabel("Input file");
     
 
         btnBrowse = new JButton("Browse");
@@ -514,5 +514,9 @@ JRadioButton yes,no;
         
         public static boolean getSave(){
             return save;
+        }
+        
+        public static String getFilepath(){
+            return filepath;
         }
 }

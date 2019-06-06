@@ -88,7 +88,7 @@ import javax.swing.JPanel;
             super.paintComponent(g);
             
             n.setBounds(boardWidth*5+150, height * 10 + 15, 35, 20);
-            n.setText(GameEngine.generationNumber+"");
+            n.setText(GameEngine.getGenerationNumber()+"");
             if(ile==0) add(n);
             
             

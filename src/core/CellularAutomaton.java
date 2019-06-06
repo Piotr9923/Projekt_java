@@ -2,7 +2,6 @@
 package core;
 
 import gui.*;
-import gui.Menu;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -12,7 +11,7 @@ public class CellularAutomaton extends JFrame{
     public static Grid g;
     static BoardGOL b;
     static BoardWireworld bw;
-    static Writer w;
+    static CAWriter w;
     private int board_width;
     public CellularAutomaton(){
          super("Cellular Automaton");
@@ -33,9 +32,9 @@ public class CellularAutomaton extends JFrame{
         b=new BoardGOL();
         bw=new BoardWireworld();
         g=new Grid();
-        w=new Writer();
-         if(Menu.cellularAutomaton==Menu.CA.WW) new WireworldBufferedReader(Menu.filepath);
-         else new GOLBufferedReader(Menu.filepath);
+        w=new CAWriter();
+         
+        CABufferedReader.read(Menu.getFilepath());
                  
          if(Menu.cellularAutomaton==Menu.CA.GOL){             
              add(b);
